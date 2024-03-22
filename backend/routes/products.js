@@ -5,14 +5,19 @@ const {Category} = require('../models/category')
 const mongoose = require('mongoose');
 
 router.get(`/`, async (req, res) => {
+    let filter = {};
+    if (req.query.categories) {
+        filter = { category: req.query.categories.split(',') };
+    }
 
-    const productList = await Product.find();
-    
+    const productList = await Product.find(filter).populate('category');
+
     if (!productList) {
         res.status(500).json({ success: false });
     }
     res.send(productList);
-}); 
+});
+
 
 router.get(`/:id`, async (req, res) => {
     const product = await Product.findById(req.params.id).populate('category');
