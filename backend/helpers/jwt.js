@@ -1,5 +1,3 @@
-// const expressJwt = require('express-jwt');
-// const { expressjwt: jwt } = require("express-jwt");
 const { expressjwt: expressjwt } = require('express-jwt');
 
 function authJwt() {
