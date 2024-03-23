@@ -41,13 +41,13 @@ router.post('/', async (req,res)=>{
     const orderItemsIdsResolved =  await orderItemsIds;
     // console.log(orderItemsIdsResolved);
 
-    // const totalPrices = await Promise.all(orderItemsIdsResolved.map(async (orderItemId)=>{
-    //     const orderItem = await OrderItem.findById(orderItemId).populate('product', 'price');
-    //     const totalPrice = orderItem.product.price * orderItem.quantity;
-    //     return totalPrice
-    // }))
-
-    // const totalPrice = totalPrices.reduce((a,b) => a +b , 0);
+    const totalPrices = await Promise.all(orderItemsIdsResolved.map(async (orderItemId)=>{
+        const orderItem = await OrderItem.findById(orderItemId).populate('product', 'price');
+        const totalPrice = orderItem.product.price * orderItem.quantity;
+        return totalPrice
+    }))
+    console.log(totalPrices)
+    const totalPrice = totalPrices.reduce((a,b) => a +b , 0);
 
     let order = new Order({
         orderItems: orderItemsIdsResolved,
@@ -58,7 +58,7 @@ router.post('/', async (req,res)=>{
         country: req.body.country,
         phone: req.body.phone,
         status: req.body.status,
-        // totalPrice: totalPrice,
+        totalPrice: totalPrice,
         user: req.body.user,
     })
     order = await order.save();
@@ -98,17 +98,17 @@ router.delete('/:id', (req, res)=>{
     })
 })
 
-// router.get('/get/totalsales', async (req, res)=> {
-//     const totalSales= await Order.aggregate([
-//         { $group: { _id: null , totalsales : { $sum : '$totalPrice'}}}
-//     ])
+router.get('/get/totalsales', async (req, res)=> {
+    const totalSales= await Order.aggregate([
+        { $group: { _id: null , totalsales : { $sum : '$totalPrice'}}}
+    ])
 
-//     if(!totalSales) {
-//         return res.status(400).send('The order sales cannot be generated')
-//     }
+    if(!totalSales) {
+        return res.status(400).send('The order sales cannot be generated')
+    }
 
-//     res.send({totalsales: totalSales.pop().totalsales})
-// })
+    res.send({totalsales: totalSales.pop().totalsales})
+})
 
 // router.get(`/get/count`, async (req, res) =>{
 //     const orderCount = await Order.countDocuments((count) => count)

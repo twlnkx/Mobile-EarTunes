@@ -34,9 +34,9 @@ const orderSchema = mongoose.Schema({
         required: true,
         default: 'Pending',
     },
-    // totalPrice: {
-    //     type: Number,
-    // },
+    totalPrice: {
+        type: Number,
+    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
