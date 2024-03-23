@@ -3,7 +3,7 @@ const app = express();
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const authJwt = require('./helpers/jwt')
+const authJwt = require('./helpers/jwt');
 
 require('dotenv/config');
 app.use(cors());
@@ -12,7 +12,7 @@ app.options('*',cors());
 //middleware
 app.use(express.json()); //makes the data be understood sent by the frontend, to the backend
 app.use(morgan('tiny'));
-app.use(authJwt);
+app.use(authJwt());
 
 
 //Routes
