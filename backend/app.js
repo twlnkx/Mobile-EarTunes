@@ -1,4 +1,4 @@
-const  express = require('express');
+const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const mongoose = require('mongoose');
@@ -13,8 +13,8 @@ app.options('*',cors());
 //middleware
 app.use(express.json()); //makes the data be understood sent by the frontend, to the backend
 app.use(morgan('tiny'));
-// app.use(authJwt());
-// app.use(errorHandler);
+app.use(authJwt());
+app.use(errorHandler);
 
 
 //Routes

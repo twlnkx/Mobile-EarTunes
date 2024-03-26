@@ -110,28 +110,32 @@ router.get('/get/totalsales', async (req, res)=> {
     res.send({totalsales: totalSales.pop().totalsales})
 })
 
-// router.get(`/get/count`, async (req, res) =>{
-//     const orderCount = await Order.countDocuments((count) => count)
+router.get(`/get/count`, async (req, res) =>{
+    const orderCount = await Order.countDocuments((count) => count)
+    //MongooseError: Model.countDocuments() no longer accepts a callback;
+    //kaya alisin ung nasa loob nung .countDocuments
+    
 
-//     if(!orderCount) {
-//         res.status(500).json({success: false})
-//     } 
-//     res.send({
-//         orderCount: orderCount
-//     });
-// })
+    if(!orderCount) {
+        res.status(500).json({success: false})
 
-// router.get(`/get/userorders/:userid`, async (req, res) =>{
-//     const userOrderList = await Order.find({user: req.params.userid}).populate({ 
-//         path: 'orderItems', populate: {
-//             path : 'product', populate: 'category'} 
-//         }).sort({'dateOrdered': -1});
+    } 
+    res.send({
+        orderCount: orderCount
+    });
+})
 
-//     if(!userOrderList) {
-//         res.status(500).json({success: false})
-//     } 
-//     res.send(userOrderList);
-// })
+router.get(`/get/userorders/:userid`, async (req, res) =>{
+    const userOrderList = await Order.find({user: req.params.userid}).populate({ 
+        path: 'orderItems', populate: {
+            path : 'product', populate: 'category'} 
+        }).sort({'dateOrdered': -1});
+
+    if(!userOrderList) {
+        res.status(500).json({success: false})
+    } 
+    res.send(userOrderList);
+})
 
 
 
