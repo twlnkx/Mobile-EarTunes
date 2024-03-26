@@ -5,23 +5,27 @@ const {Category} = require('../models/category')
 const mongoose = require('mongoose');
 const multer = require('multer');
 
-const storage = multer.diskStorage({
-    // destination: function (req, file, cb) {
-    //     const isValid = FILE_TYPE_MAP[file.mimetype];
-    //     let uploadError = new Error('invalid image type');
+//mimetype inicates the format of a file
+const FILE_TYPE_MAP = {
+    'image/png': 'png',
+    'image/jpeg': 'jpeg',
+    'image/jpg': 'jpg',
+};
 
-    destination: function(req, file, cb){
-        cb(null,'public/uploads');
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        const isValid = FILE_TYPE_MAP[file.mimetype];
+        let uploadError = new Error('invalid image type');
+        if (isValid) {
+            uploadError = null;
+        }
+        cb(uploadError, 'public/uploads'); 
     },
 
-        // if (isValid) {
-        //     uploadError = null;
-        // }
-        // cb(uploadError, 'public/uploads');
     filename: function (req, file, cb) {
         const fileName = file.originalname.split(' ').join('-');
-        // const extension = FILE_TYPE_MAP[file.mimetype];
-        cb(null, fileName + '-'+ Date.now());
+        const extension = FILE_TYPE_MAP[file.mimetype];
+        cb(null, `${fileName}-${Date.now()}.${extension}`);
     },
 });
 
@@ -103,7 +107,7 @@ router.delete('/:id', (req, res) => {
         });
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', uploadOptions.single('image'),async (req, res) => {
     if (!mongoose.isValidObjectId(req.params.id)) {
         return res.status(400).send('Invalid Product Id');
     }
@@ -129,7 +133,7 @@ router.put('/:id', async (req, res) => {
         {
             name: req.body.name,
             description: req.body.description,
-            image: req.body.image,
+            image: imagepath,
             brand: req.body.brand,
             price: req.body.price,
             category: req.body.category,
