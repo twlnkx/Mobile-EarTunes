@@ -10,7 +10,11 @@
         },
         color: { 
             type: String,
-        }
+        },
+        image: [{
+            type: String,
+            default: ''
+        }]
     })
 
     categorySchema.method('toJSON', function(){
