@@ -127,7 +127,7 @@ router.put('/:id', uploadOptions.array('image', 10),async (req, res) => {
     const product = await Product.findById(req.params.id);
     if (!product) return res.status(400).send('Invalid Product!');
 
-    const file = req.file;
+    
     let imagePath = [];
     const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`;
     const files = req.files;
