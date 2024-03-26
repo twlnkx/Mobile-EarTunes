@@ -56,16 +56,25 @@ router.get(`/:id`, async (req, res) => {
     res.send(product);
 });
 
-router.post(`/`, uploadOptions.single('image'),async (req, res)=>{
-    const file = req.file;
-    if (!file) return res.status(400).send('No image in the request');
-
-    const fileName = file.filename;
+router.post(`/`, uploadOptions.array('image', 10), async (req, res) => {
+    const files = req.files;
+    if (!files) {
+        return res.status(400).send('No images in the request');
+    }
+    //para sa pinakaimage
+    let imagePath = [];
     const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`;
+
+    // Map uploaded files to their paths
+    files.forEach(file => {
+        imagePath.push(`${basePath}${file.filename}`);
+    });
+
     const product = new Product({
         name: req.body.name,
         description: req.body.description,
-        image: `${basePath}${fileName}`, //"http://localhost:3000/public/upload/image-2323232"
+        image: imagePath, //"http://localhost:3000/public/upload/image-2323232"
+        // images: imagesPaths,
         brand: req.body.brand,
         price: req.body.price,
         category: req.body.category,
@@ -73,18 +82,19 @@ router.post(`/`, uploadOptions.single('image'),async (req, res)=>{
         rating: req.body.rating,
         numReviews: req.body.numReviews,
         isFeatured: req.body.isFeatured,
-
     });
 
-    product.save().then((createdProduct=>{
-        res.status(201).json(createdProduct)
-    })).catch((err)=>{
+    try {
+        const createdProduct = await product.save();
+        res.status(201).json(createdProduct);
+    } catch (err) {
         res.status(500).json({
-            error:err,
-            success:false
-        })  
-    })   
-})
+            error: err,
+            success: false
+        });
+    }
+});
+
 
 router.delete('/:id', (req, res) => {
     Product.findByIdAndDelete(req.params.id)
@@ -173,5 +183,39 @@ router.get(`/get/featured/:count`, async (req, res) => {
     }
     res.send(products);
 });
+
+
+//multiple image upload for gallery
+// router.put(
+//     '/gallery-images/:id',
+//     uploadOptions.array('images', 10),
+//     async (req, res) => { 
+//         if (!mongoose.isValidObjectId(req.params.id)) {
+//             return res.status(400).send('Invalid Product Id');
+//         }
+//         const files = req.files;
+//         let imagesPaths = [];
+//         const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`;
+
+//         if (files) {
+//             files.map((file) => {
+//                 imagesPaths.push(`${basePath}${file.filename}`);
+//             });
+//         }
+
+//         const product = await Product.findByIdAndUpdate(
+//             req.params.id,
+//             {
+//                 images: imagesPaths,
+//             },
+//             { new: true }
+//         );
+
+//         if (!product)
+//             return res.status(500).send('the gallery cannot be updated!');
+
+//         res.send(product);
+//     }
+// );
 
 module.exports = router;
