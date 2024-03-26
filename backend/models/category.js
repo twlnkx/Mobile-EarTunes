@@ -13,5 +13,10 @@
         }
     })
 
+    categorySchema.method('toJSON', function(){
+        const { __v, ...object } = this.toObject();
+        const { _id:id, ...result } = object;
+        return { ...result, id };
+    });
 
     exports.Category = mongoose.model('Category', categorySchema);
