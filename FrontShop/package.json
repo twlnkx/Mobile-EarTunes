@@ -11,13 +11,22 @@
   "dependencies": {
     "@expo/config": "^8.1.1",
     "@expo/metro-config": "^0.10.0",
+    "create-react-class": "^15.7.0",
+    "deprecated-react-native-prop-types": "^5.0.0",
     "expo": "~50.0.14",
     "expo-status-bar": "~1.11.1",
+    "native-base": "^2.8.2",
+    "prop-types": "^15.8.1",
     "react": "18.2.0",
-    "react-native": "^0.73.6"
+    "react-native": "^0.73.6",
+    "react-native-swiper": "^1.6.0",
+    "react-timer-mixin": "^0.13.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "@types/react": "^18.2.73",
+    "@types/react-dom": "^18.2.23",
+    "typescript": "^5.4.3"
   },
   "private": true
 }
