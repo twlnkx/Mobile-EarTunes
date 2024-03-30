@@ -1,7 +1,9 @@
 import React from "react";
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, LogBox, View, Text} from 'react-native';
+import {LogBox} from 'react-native';
 import ViewPropTypes from 'deprecated-react-native-prop-types';
+import { NavigationContainer } from "@react-navigation/native";
+import Main from "./Navigators/Main";
 
 
 LogBox.ignoreAllLogs(true);
@@ -11,18 +13,19 @@ import ProductContainer from './Screens/Products/ProductContainer'
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Header />
-      <ProductContainer />
-    </View>
+    <NavigationContainer>
+        <Header />
+        <Main />
+    </NavigationContainer>
+    
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#fff',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//   },
+// });
