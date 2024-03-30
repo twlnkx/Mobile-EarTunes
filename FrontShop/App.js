@@ -4,7 +4,7 @@ import { StyleSheet, LogBox, View, Text} from 'react-native';
 import ViewPropTypes from 'deprecated-react-native-prop-types';
 
 
-//LogBox.ignoreAllLogs(true);
+LogBox.ignoreAllLogs(true);
 //Screens
 import Header from './Shared/Header'
 import ProductContainer from './Screens/Products/ProductContainer'
