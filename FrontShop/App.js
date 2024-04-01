@@ -1,16 +1,16 @@
+import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StatusBar } from 'expo-status-bar';
-import {LogBox} from 'react-native';
-import ViewPropTypes from 'deprecated-react-native-prop-types';
+import { LogBox } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import Main from "./Navigators/Main";
+import Toast from "react-native-toast-message";
 
-//Redux
+// Redux
 import { Provider } from "react-redux";
 import store from "./Redux/store";
 
-//Navigators
+// Navigatiors
 import Main from "./Navigators/Main";
+
 LogBox.ignoreAllLogs(true);
 //Screens
 import Header from './Shared/Header'
@@ -20,11 +20,11 @@ import store from "./Redux/store";
 export default function App() {
   return (
     <Provider store={store}>
-    <NavigationContainer>
-        <Header />
-        <Main />
-    </NavigationContainer>
-    </Provider>
+        <NavigationContainer>
+          <Header />
+          <Main />
+          </NavigationContainer>
+      </Provider>
     
   );
 }
